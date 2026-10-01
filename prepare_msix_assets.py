@@ -7,6 +7,8 @@ from PIL import Image
 
 root = Path(__file__).resolve().parent
 source = Image.open(root / "assets" / "icon.png").convert("RGBA")
+for size, name in ((1080, "store-box-1080.png"), (300, "store-icon-300.png")):
+    source.resize((size, size), Image.Resampling.LANCZOS).save(root / "assets" / name)
 target = root / "build" / "msix-stage" / "Assets"
 target.mkdir(parents=True, exist_ok=True)
 for size, name in (
