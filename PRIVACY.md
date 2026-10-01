@@ -1,6 +1,6 @@
 # Privacidade — Firaw Monitor de Chamadas para Teams
 
-O aplicativo coleta diagnósticos do próprio computador, como uso de CPU e memória, estado dos dispositivos de áudio, rede, serviços do Windows e eventos de sistema relevantes para a qualidade das chamadas. Os relatórios são gravados **somente no computador do usuário**, na pasta `dados` ao executar o código-fonte ou em `%LOCALAPPDATA%\TeamsCallMonitor\dados` na versão instalada.
+O aplicativo coleta diagnósticos do próprio computador, como uso de CPU e memória, estado dos dispositivos de áudio, rede, serviços do Windows e eventos de sistema relevantes para a qualidade das chamadas. Os relatórios são gravados **somente no computador do usuário**. O botão **Abrir logs** abre a pasta usada pela instalação: `dados` no código-fonte, `%LOCALAPPDATA%\TeamsCallMonitor\dados` no executável avulso ou `LocalState\dados` nos dados do pacote da Microsoft Store.
 
 O aplicativo não grava áudio, vídeo, tela, mensagens, credenciais ou nomes de participantes. Ele não envia relatórios ao desenvolvedor nem contém anúncios ou telemetria própria.
 

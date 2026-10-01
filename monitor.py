@@ -27,9 +27,34 @@ from diagnostics import Check, fast_media_checks, run_diagnostics
 
 
 ROOT = Path(__file__).resolve().parent
-DATA_DIR = (Path(os.environ.get("LOCALAPPDATA", Path.home() / "AppData" / "Local"))
-            / "TeamsCallMonitor" / "dados" if getattr(sys, "frozen", False)
-            else ROOT / "dados")
+
+
+def package_family_name() -> str | None:
+    """Return the MSIX family name, if this process has package identity."""
+    if os.name != "nt":
+        return None
+    try:
+        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+        get_name = kernel32.GetCurrentPackageFamilyName
+        get_name.argtypes = [ctypes.POINTER(ctypes.c_uint32), ctypes.c_wchar_p]
+        get_name.restype = ctypes.c_long
+        length = ctypes.c_uint32(0)
+        if get_name(ctypes.byref(length), None) != 122:  # ERROR_INSUFFICIENT_BUFFER
+            return None
+        buffer = ctypes.create_unicode_buffer(length.value)
+        return buffer.value if get_name(ctypes.byref(length), buffer) == 0 else None
+    except (AttributeError, OSError, ValueError):
+        return None
+
+
+LOCAL_DATA = Path(os.environ.get("LOCALAPPDATA", Path.home() / "AppData" / "Local"))
+PACKAGE_FAMILY = package_family_name()
+if PACKAGE_FAMILY:
+    DATA_DIR = LOCAL_DATA / "Packages" / PACKAGE_FAMILY / "LocalState" / "dados"
+elif getattr(sys, "frozen", False):
+    DATA_DIR = LOCAL_DATA / "TeamsCallMonitor" / "dados"
+else:
+    DATA_DIR = ROOT / "dados"
 ICON_PATH = ROOT / "assets" / "icon-64.png"
 INTERVAL = 2.0
 TEAMS_HOST = "teams.microsoft.com"
