@@ -2,6 +2,8 @@
 
 Aplicativo independente para diagnosticar fatores locais que podem afetar chamadas do Microsoft Teams no Windows. Não é afiliado, certificado ou endossado pela Microsoft.
 
+[Política de privacidade](PRIVACY.md) · [Código público no GitHub](https://github.com/hugomendoncaraizen/firaw-teams-call-monitor)
+
 Para executar o código-fonte, instale Python 3, abra `iniciar.bat` e aguarde as dependências serem instaladas na primeira execução. Para gerar a versão empacotada para Windows, use `build.ps1` com Python 3.13. O executável será criado em `dist\FirawCallMonitor`.
 
 O programa mantém apenas uma janela ativa mesmo se for aberto novamente. Fechar a janela interrompe a coleta até a próxima abertura. Ao executar o código-fonte, os relatórios ficam em `dados`; na versão empacotada, ficam em `%LOCALAPPDATA%\TeamsCallMonitor\dados`.

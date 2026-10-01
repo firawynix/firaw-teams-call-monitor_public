@@ -3,7 +3,7 @@ param([string]$Version = '1.0.0.0')
 $ErrorActionPreference = 'Stop'
 Set-Location $PSScriptRoot
 if ($Version -notmatch '^[1-9][0-9]*\.[0-9]+\.[0-9]+\.0$') {
-    throw 'Use uma versão no formato 1.0.0.0; o último número deve ser zero.'
+    throw 'Use uma versao no formato 1.0.0.0; o ultimo numero deve ser zero.'
 }
 
 $app = Join-Path $PSScriptRoot 'dist\FirawCallMonitor'
@@ -15,7 +15,7 @@ $stage = Join-Path $PSScriptRoot 'build\msix-stage'
 $resolvedRoot = [IO.Path]::GetFullPath($PSScriptRoot).TrimEnd('\') + '\'
 $resolvedStage = [IO.Path]::GetFullPath($stage)
 if (-not $resolvedStage.StartsWith($resolvedRoot, [StringComparison]::OrdinalIgnoreCase)) {
-    throw 'Pasta temporária fora do projeto.'
+    throw 'Pasta temporaria fora do projeto.'
 }
 if (Test-Path -LiteralPath $stage) { Remove-Item -LiteralPath $stage -Recurse -Force }
 New-Item -ItemType Directory -Path (Join-Path $stage 'Assets') -Force | Out-Null
@@ -24,7 +24,7 @@ Copy-Item -LiteralPath (Join-Path $app '_internal') -Destination $stage -Recurse
 
 $python = Join-Path $PSScriptRoot '.build-venv\Scripts\python.exe'
 & $python prepare_msix_assets.py
-if ($LASTEXITCODE -ne 0) { throw 'Falha ao preparar ícones do MSIX.' }
+if ($LASTEXITCODE -ne 0) { throw 'Falha ao preparar icones do MSIX.' }
 
 $manifest = @'
 <?xml version="1.0" encoding="utf-8"?>
@@ -39,7 +39,7 @@ $manifest = @'
   <Properties>
     <DisplayName>Firaw - Monitor de Chamadas para Teams</DisplayName>
     <PublisherDisplayName>Firawynix</PublisherDisplayName>
-    <Description>Diagnóstico local de chamadas do Microsoft Teams.</Description>
+    <Description>Diagnostico local de chamadas do Microsoft Teams.</Description>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Resources><Resource Language="pt-BR" /></Resources>
@@ -51,7 +51,7 @@ $manifest = @'
     <Application Id="FirawCallMonitor" Executable="FirawCallMonitor.exe"
                  uap10:RuntimeBehavior="packagedClassicApp" uap10:TrustLevel="mediumIL">
       <uap:VisualElements DisplayName="Firaw - Monitor de Chamadas para Teams"
-                          Description="Diagnóstico local de chamadas do Microsoft Teams"
+                          Description="Diagnostico local de chamadas do Microsoft Teams"
                           Square150x150Logo="Assets\Square150x150Logo.png"
                           Square44x44Logo="Assets\Square44x44Logo.png"
                           BackgroundColor="#101827" />
@@ -64,9 +64,13 @@ $manifest.Replace('__VERSION__', $Version) | Set-Content -LiteralPath (Join-Path
 $sdkBin = Get-ChildItem -LiteralPath "${env:ProgramFiles(x86)}\Windows Kits\10\bin" -Directory |
     Where-Object { Test-Path -LiteralPath (Join-Path $_.FullName 'x64\makeappx.exe') } |
     Sort-Object Name -Descending | Select-Object -First 1
-if (-not $sdkBin) { throw 'Windows SDK com MakeAppx.exe não encontrado.' }
+if (-not $sdkBin) { throw 'Windows SDK com MakeAppx.exe nao encontrado.' }
 $makeappx = Join-Path $sdkBin.FullName 'x64\makeappx.exe'
 $output = Join-Path $PSScriptRoot "dist\FirawCallMonitor_$($Version)_x64.msix"
-& $makeappx pack /d $stage /p $output /o
-if ($LASTEXITCODE -ne 0) { throw 'Falha ao gerar o MSIX.' }
+$packLog = Join-Path $PSScriptRoot 'build\makeappx.log'
+& $makeappx pack /d $stage /p $output /o > $packLog 2>&1
+if ($LASTEXITCODE -ne 0) {
+    Get-Content -LiteralPath $packLog -Tail 30
+    throw 'Falha ao gerar o MSIX.'
+}
 Write-Host "Pacote gerado: $output"
