@@ -1,0 +1,14 @@
+.venv/
+.build-venv/
+__pycache__/
+*.py[cod]
+dados/
+build/
+dist/
+*.spec
+*.msix
+*.msixupload
+*.zip
+benchmark_termico.py
+teste_nucleos.py
+
