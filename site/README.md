@@ -4,6 +4,8 @@ Página estática em português, inspirada no site local do Firaw VidBee. Não e
 
 O ícone para o menu Produtos do portfólio está em [`assets/product-menu-icon.png`](assets/product-menu-icon.png): PNG 128 × 128, transparente e monocromático, pronto para o botão **Enviar PNG**. A versão colorida do aplicativo continua em `assets/icon.png`.
 
+Para o card do projeto, use [`assets/app-preview.png`](assets/app-preview.png) como capa e [`assets/site-preview.png`](assets/site-preview.png) como imagem da telinha **Ao vivo**.
+
 No Windows, dê dois cliques em `abrir-site.bat` na raiz do projeto. Ele inicia a página local e a abre no navegador. Também é possível executar manualmente:
 
 ```powershell
