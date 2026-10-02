@@ -4,6 +4,8 @@ Aplicativo independente para diagnosticar fatores locais que podem afetar chamad
 
 [Política de privacidade](PRIVACY.md) · [Código público no GitHub](https://github.com/firawynix/firaw-teams-call-monitor_public)
 
+[Site público de apresentação](https://lab.firawynix.com.br/diglocal/) · [Ícone PNG para o menu Produtos](site/assets/product-menu-icon.png)
+
 Para executar o código-fonte, instale Python 3, abra `iniciar.bat` e aguarde as dependências serem instaladas na primeira execução. Para gerar a versão empacotada para Windows, use `build.ps1` com Python 3.13. O executável será criado em `dist\FirawCallMonitor`.
 
 O programa mantém apenas uma janela ativa mesmo se for aberto novamente. Fechar a janela interrompe a coleta até a próxima abertura. Ao executar o código-fonte, os relatórios ficam em `dados`; no executável avulso, em `%LOCALAPPDATA%\TeamsCallMonitor\dados`; na versão da Store, em `%LOCALAPPDATA%\Packages\Firawynix.Firaw-MonitordeChamadasparaTeams_tdc6w54njv142\LocalState\dados`. O botão **Abrir logs** abre a pasta correta em cada versão.
